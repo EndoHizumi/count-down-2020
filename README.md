@@ -1,5 +1,10 @@
 # Count-down-2020
 
+## Easy start
+```
+bash run.sh
+```
+
 ## Project setup
 ```
 npm install
