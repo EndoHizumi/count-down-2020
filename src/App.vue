@@ -6,7 +6,7 @@
     </div>
     <div id="controller">
       <p>
-        <img class="quake" src="./asset/mekemeke.png" v-on:click="append" />
+        <img class="quake" v-bind:src="imagePath" v-on:click="append" />
       </p>
     </div>
     <div class="tokens">
@@ -18,6 +18,7 @@
         v-bind:token="food.token"
       />
     </div>
+    <img class="tsukkomi" v-bind:src="tsukkomiPath" v-if="this.foods.length >= this.limit" v-on:click="onTap"/>
   </div>
 </template>
 
@@ -25,20 +26,22 @@
 import token from "./components/token";
 export default {
   name: "app",
+  mounted: function() {
+    this.limit = Math.round(window.outerWidth / 100) * Math.round(window.outerHeight / 160)
+  },
   data() {
     return {
       state: "quake",
       message: "A happy new year",
-      foods: []
+      foods: [],
+      imagePath: require("./asset/mekemeke.png"),
+      tsukkomiPath: require("./asset/tsukkomi.png"),
+      limit: 0,
+      tap: 0
     };
   },
   components: {
     token
-  },
-  computed: {
-    index: function() {
-      return this.foods.length * 100;
-    }
   },
   methods: {
     append() {
@@ -53,6 +56,13 @@ export default {
     reduce() {
       if (this.foods.length > 1) {
         this.foods.pop();
+      }
+    },
+    onTap() {
+      this.tap+=1
+      if(this.tap >= 10){
+        this.imagePath=require("./asset/surpise.png")
+        this.tsukkomiPath=require("./asset/tsukkomi2.png")
       }
     }
   }
@@ -70,11 +80,18 @@ export default {
 }
 #header {
   z-index: 1;
-  -webkit-text-stroke:1px lightgray
+  -webkit-text-stroke: 1px lightgray;
 }
 .tokens {
   position: absolute;
-  top:0;
+  top: 0;
   z-index: -1;
+  width: 99%;
+}
+
+.tsukkomi {
+  display: block;
+  position: absolute;
+  bottom: 0;
 }
 </style>
